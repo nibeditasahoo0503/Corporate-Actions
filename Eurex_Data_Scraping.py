@@ -204,7 +204,7 @@ def main():
 
     total_pages = get_total_pages(start_url2)
 
-    total_pages = 20
+    total_pages = 100
 
     data_list = filter_and_extract_action_data(start_url, total_pages)
 
