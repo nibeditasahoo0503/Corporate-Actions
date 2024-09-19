@@ -40,6 +40,10 @@ def extract_details_from_segment(text_segment, isin_old, isin_new):
     details = {}
     details['ISIN_old'] = isin_old
     details['ISIN_new'] = isin_new
+    details['security_name'] = 'NA'
+    details['effective_date'] = 'NA'
+    details['corporate_action_type'] = 'NA'
+    details['corporate_action_terms'] = 'NA'
 
     parts = re.split(r'(\d{1,2}[./-]\d{1,2}[./-]\d{4})', text_segment)
     if len(parts) >= 2:
@@ -57,20 +61,6 @@ def extract_details_from_segment(text_segment, isin_old, isin_new):
                 if ratio_0 is not None and ratio_1 is not None:
                     details['corporate_action_type'] = 'Stock Split' if ratio_0 <= ratio_1 else 'Reverse Stock Split'
                     details['corporate_action_terms'] = split_ratio
-                else:
-                    details['corporate_action_type'] = 'NA'
-                    details['corporate_action_terms'] = 'NA'
-            else:
-                details['corporate_action_type'] = 'NA'
-                details['corporate_action_terms'] = 'NA'
-        else:
-            details['corporate_action_type'] = 'NA'
-            details['corporate_action_terms'] = 'NA'
-    else:
-        details['security_name'] = 'NA'
-        details['effective_date'] = 'NA'
-        details['corporate_action_type'] = 'NA'
-        details['corporate_action_terms'] = 'NA'
 
     return details
 
@@ -160,6 +150,6 @@ def save_to_excel(data, filename='xetra_newsboard.xlsx'):
     df_no_duplicates.to_excel(filename, index=False)
 
 if __name__ == '__main__':
-    data = scrape_xetra_newsboard(max_pages=100)
+    data = scrape_xetra_newsboard(max_pages=1000)
     save_to_excel(data, 'xetra_newsboard.xlsx')
     print(f"Data saved to 'xetra_newsboard.xlsx'")
